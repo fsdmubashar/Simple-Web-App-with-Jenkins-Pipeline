@@ -1,10 +1,10 @@
 pipeline {
-    agent any
+     agent { label 'agent-1' }
     
     stages {
         stage('Checkout') {
             steps {
-                checkout scm
+                git branch: 'main', changelog: false, poll: false, url: 'https://github.com/fsdmubashar/springboot-java-poject.git'
             }
         }
         
@@ -42,3 +42,4 @@ pipeline {
         }
     }
 }
+
