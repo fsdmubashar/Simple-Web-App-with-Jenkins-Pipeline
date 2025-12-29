@@ -27,10 +27,21 @@ pipeline {
         }
         
         stage('Deploy') {
-            steps {
-                echo 'Deploying the application...
-            }
-        }
+              steps {
+                  sh '''
+                  echo "Stopping old container (if any)..."
+                  docker stop springboot-app || true
+                  docker rm springboot-app || true
+
+                  echo "Building Docker image..."
+                  docker build -t springboot-app:latest .
+
+                  echo "Starting new container..."
+                  docker run -d -p 80:80 --name springboot-app springboot-app:latest
+                  '''
+              }
+          }
+
     }
     
     post {
@@ -42,4 +53,5 @@ pipeline {
         }
     }
 }
+
 
